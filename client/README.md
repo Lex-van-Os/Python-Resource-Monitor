@@ -19,11 +19,17 @@ git clone https://github.com/yourusername/Python-Resource-Monitor.git
 1. Build the Docker image from the Dockerfile:
 
 ```sh
-docker build -t python-resource-monitor-client .
+docker build -t monitor-client:1.0.0 .
 ```
 
 2. Run the Docker container: 
 
 ```sh
-docker run -d --name prmc python-resource-monitor-client
+docker run -d --name monitor-client monitor-client:1.0.0
+```
+
+3. Re-run the Docker container:
+
+```sh
+docker start monitor-client
 ```

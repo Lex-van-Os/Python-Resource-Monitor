@@ -8,7 +8,13 @@ WORKDIR /app
 COPY . /app
 
 # Make your script executable
-RUN chmod +x ./monitor.sh
+RUN chmod +x /app/monitor.sh
+
+# List the contents of the /app directory
+RUN ls -la /app
+
+# Log the current path
+RUN echo "Current path: $PWD"
 
 # Run your script when the container launches
-CMD ["./monitor.sh"]
+CMD ["/app/monitor.sh"]
