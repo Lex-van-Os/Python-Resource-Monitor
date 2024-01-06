@@ -16,5 +16,11 @@ RUN ls -la /app
 # Log the current path
 RUN echo "Current path: $PWD"
 
+# Update package lists and upgrade new installations
+RUN apt-get update
+
+# Install necessary package(s) for script
+RUN apt-get install -y sysstat
+
 # Run your script when the container launches
 CMD ["/app/monitor.sh"]
