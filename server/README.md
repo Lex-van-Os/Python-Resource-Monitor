@@ -8,22 +8,22 @@ This is the server application for the Python-Resource-Monitor project. The serv
 
 ## Installation
 
-1. Clone the Python-Resource-Monitor repository to your local machine.
+Installation and configuration of the Server can be done by executing the corresponding automation file in the `commands` folder.
 
-```sh
-git clone https://github.com/yourusername/Python-Resource-Monitor.git
-```
+### Windows
 
-## Running the Docker Container
+1. refresh-client: Automatically sets up the Docker environment
 
-1. Build the Docker image from the Dockerfile:
+### Unix
 
-```sh
-docker build -t python-resource-monitor-server .
-```
+1. WIP
 
-2. Run the Docker container: 
+## Functionality
 
-```sh
-docker run -d --name prmc python-resource-monitor-server
-```
+The Server application is set-up using the `asyncio` Python library. With this, an asynchronous socket functionality is realized, which can handle incoming client application statistics.
+
+### Used packages
+
+1. asyncio
+2. Flask (WIP)
+3. logging
