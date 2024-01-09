@@ -9,8 +9,8 @@ A resource monitoring system written in Python. The client monitors local resour
 ### Client application
 
 - A **client-server** application where the **client** sends resource usage data (CPU usage, memory, disk usage, etc.) to the **server**.
-    - Resource monitoring using bash scripts and tools like top, ps, etc.
-    - Periodically collects resource usage data (e.g., every 5 seconds).
+  - Resource monitoring using bash scripts and tools like top, ps, etc.
+  - Periodically collects resource usage data (e.g., every 5 seconds).
 - Periodically sends resource usage data over the **network** to the **server**.
 
 ---
@@ -41,7 +41,7 @@ Functionality: `SQLite`, `sqlite3`, `Flask` (visualization)
 ### Visualization
 
 - Visualization using charts/graphs based on SQLite data.
-    - Using gnuplot/chart.js, for example.
+  - Using gnuplot/chart.js, for example.
 - Occurs on the **Server**.
 
 ---
@@ -51,10 +51,10 @@ Functionality: `Flask`, `gnuplot`, `chart.js`
 ### Automation
 
 - Bash scripts for:
-    - Deployment of **client** and **server** applications.
-    - Configuration of **client** and **server** applications.
-    - Starting and stopping monitors.
-    - Logging.
+  - Deployment of **client** and **server** applications.
+  - Configuration of **client** and **server** applications.
+  - Starting and stopping monitors.
+  - Logging.
 
 ---
 
@@ -67,3 +67,31 @@ Functionality: `Bash`, `Docker`, `Markdown`
 ---
 
 Functionality: `Built-in logging`, `logging`
+
+## Starting the application
+
+1. Navigate to the correct directory
+   Ensure that you're inside of the project root folder
+
+2. Run the following command:
+```sh
+docker-compose up
+```
+
+3. Reset & recreate the application entirely:
+```sh
+docker-compose up --build --force-recreate
+```
+
+## Debugging the application
+
+- Check Docker container information:
+```sh
+docker ps
+```
+
+- Check Docker containers network information:
+```sh
+docker network inspect python-resource-monitor_monitor-network
+```
+

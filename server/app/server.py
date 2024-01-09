@@ -3,11 +3,10 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-HOST = "127.0.0.1"
-PORT = 43256
+HOST = "0.0.0.0"
+PORT = 8080
 
 async def handle_client(reader: asyncio.StreamReader, writer: asyncio.StreamWriter) -> None:
-    logger.info("Client connected")
     data = None
 
     while True:
@@ -18,25 +17,29 @@ async def handle_client(reader: asyncio.StreamReader, writer: asyncio.StreamWrit
             break
 
         if not data:
+            logger.info("Client disconnected")
             break
         else:
             msg = data.decode()
             address, port = writer.get_extra_info("peername")
             logger.info(f"Received {msg!r} from {address}:{port}")
 
+    logger.info("Closing writer")
     writer.close()
     await writer.wait_closed()
 
 async def start_server() -> None:
-    print("Starting server")
     while True:
         server = await asyncio.start_server(handle_client, HOST, PORT)
+
+        logger.info("Retrieving new socket connection")
+        addr = server.sockets[0].getsockname()
+        logger.info(f"Client connected on {addr}")
 
         async with server:
             await server.serve_forever()
 
 if __name__ == "__main__":
-    print("Hello world!")
     logging.basicConfig(level=logging.INFO)
     loop = asyncio.new_event_loop()
 
