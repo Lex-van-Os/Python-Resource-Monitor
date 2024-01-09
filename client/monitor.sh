@@ -1,4 +1,6 @@
-#!/bin/sh
+#!/bin/bash
+
+exec 3<>/dev/tcp/monitor-server/8080
 
 echo "Hello World!"
 
@@ -14,7 +16,14 @@ do
     cpuUsage=$(mpstat 1 1 | awk '/Average:/ {print 100 - $NF}')
     memoryUsage=$(free | awk '/Mem:/ {print $4}')
 
-    echo "Timestamp: $timeStamp, Processes: $processes, CPU Usage: $cpuUsage%, Memory Usage: $memoryUsage"
+    message="Timestamp: $timeStamp, Processes: $processes, CPU Usage: $cpuUsage%, Memory Usage: $memoryUsage"
+
+    echo $message
+
+    echo $message >&3
     
     sleep 1
 done
+
+exec 3>&-
+exec 3<&-

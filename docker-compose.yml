@@ -1,0 +1,21 @@
+version: "3"
+services:
+  monitor-client:
+    build: ./client
+    networks:
+      - monitor-network
+    depends_on:
+      - monitor-server
+    command: ["/app/monitor.sh"]
+    restart: always
+
+  monitor-server:
+    build: ./server
+    networks:
+      - monitor-network
+    ports:
+      - "1024:8080"
+    command: ["bash", "-c", "python3 server.py & nginx -g 'daemon off;'"]
+    restart: no
+networks:
+  monitor-network:

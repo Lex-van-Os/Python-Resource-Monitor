@@ -30,7 +30,7 @@ COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 WORKDIR /app
 
 # Expose port 80 for the NGINX server
-EXPOSE 80
+EXPOSE 8080
 
 # Command to start both Python server and NGINX
 CMD ["bash", "-c", "python3 server.py & nginx -g 'daemon off;'"]

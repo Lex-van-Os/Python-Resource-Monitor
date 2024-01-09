@@ -20,7 +20,7 @@ RUN echo "Current path: $PWD"
 RUN apt-get update
 
 # Install necessary package(s) for script
-RUN apt-get install -y sysstat
+RUN apt-get install -y sysstat netcat
 
 # Run your script when the container launches
 CMD ["/app/monitor.sh"]
