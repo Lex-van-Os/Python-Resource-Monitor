@@ -1,10 +1,12 @@
 import asyncio
 import logging
+import json
 
 logger = logging.getLogger(__name__)
 
 HOST = "0.0.0.0"
 PORT = 8080
+
 
 async def handle_client(reader: asyncio.StreamReader, writer: asyncio.StreamWriter) -> None:
     data = None
@@ -21,12 +23,20 @@ async def handle_client(reader: asyncio.StreamReader, writer: asyncio.StreamWrit
             break
         else:
             msg = data.decode()
+            monitor_metrics = json.loads(msg)
             address, port = writer.get_extra_info("peername")
-            logger.info(f"Received {msg!r} from {address}:{port}")
+
+            try:
+                logger.info(
+                    f"Timestamp: {monitor_metrics['timestamp']!r} - Processes: {monitor_metrics['processes']!r} - CPU usage: {monitor_metrics['cpuUsage']!r} - Memory usage: {monitor_metrics['memoryUsage']!r} from {address}:{port}")
+            except KeyError:
+                logger.error("KeyError: key could not be found in metrics")
+                continue
 
     logger.info("Closing writer")
     writer.close()
     await writer.wait_closed()
+
 
 async def start_server() -> None:
     while True:
