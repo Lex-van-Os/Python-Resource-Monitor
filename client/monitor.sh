@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Open write end and read end of the pipe to the server
 exec 3<>/dev/tcp/monitor-server/8080
 
 echo "Hello World!"
@@ -16,7 +17,8 @@ do
     cpuUsage=$(mpstat 1 1 | awk '/Average:/ {print 100 - $NF}')
     memoryUsage=$(free | awk '/Mem:/ {print $4}')
 
-    message="Timestamp: $timeStamp, Processes: $processes, CPU Usage: $cpuUsage%, Memory Usage: $memoryUsage"
+    # Create a JSON object
+    message="{\"timestamp\": \"$timeStamp\", \"processes\": $processes, \"cpuUsage\": $cpuUsage, \"memoryUsage\": $memoryUsage}"
 
     echo $message
 
@@ -25,5 +27,6 @@ do
     sleep 1
 done
 
+# Close both the write end and read end of the pipe
 exec 3>&-
 exec 3<&-
