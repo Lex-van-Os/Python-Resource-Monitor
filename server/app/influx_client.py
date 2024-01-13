@@ -35,6 +35,13 @@ class MonitorInfluxClient():
             "cpu_usage", monitor_metrics.cpu_usage).field("memory_usage", monitor_metrics.memory_usage)
 
         try:
-            await self.client.write_api().write(bucket=self.influx_bucket, org=self.influx_org, record=metrics_point)
+            await self.client.write_api().write(
+                    bucket=self.influx_bucket,
+                    record=metrics_point,
+                    record_measurement_name="monitor_metric",
+                    record_tag_keys=["device_id"],
+                    record_field_keys=["timestamp", "processes", "cpu_usage", "memory_usage"],
+                    record_time_key="timestamp",
+                )
         except Exception as e:
             self.logger.error(f"Write operation failed: {e}")
