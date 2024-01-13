@@ -1,10 +1,6 @@
 # Stage 1: Build Python application
 FROM python:3.12-slim AS python-builder
 
-# Install Python dependencies
-COPY requirements.txt .
-RUN pip3 install --no-cache-dir -r requirements.txt
-
 # Copy Python application code
 COPY app /app
 
@@ -14,8 +10,11 @@ FROM ubuntu:23.10
 # Update package lists
 RUN apt-get update
 
-# Install Python, pip and Nginx
+# Install Python, pip, Nginx, and InfluxDB client
 RUN apt-get install -y python3 python3-pip nginx
+
+RUN apt-get update && apt-get install -y python3-pip
+RUN pip3 install influxdb-client[async] Flask --break-system-packages
 
 # Clean up package lists to reduce image size
 RUN rm -rf /var/lib/apt/lists/*
