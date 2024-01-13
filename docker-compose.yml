@@ -13,9 +13,31 @@ services:
     build: ./server
     networks:
       - monitor-network
+    depends_on:
+      - influxdb
     ports:
       - "1024:8080"
     command: ["bash", "-c", "python3 server.py & nginx -g 'daemon off;'"]
+    environment:
+      - INFLUX_URL=http://influxdb:8086
+      - INFLUX_TOKEN=yourToken
+      - INFLUX_ORG=myOrganisation # Id found in InfluxDB UI
+      - INFLUX_BUCKET=ResourceMonitor
+      - INFLUX_BUCKET_AUTH=resource_monitor
+      - INFLUX_ADMIN_USER=admin
+      - INFLUX_ADMIN_PASSWORD=changeMe
     restart: no
+
+  influxdb:
+    image: influxdb:2.7.5
+    ports:
+      - "8086:8086"
+    volumes:
+      - influxdb:/var/lib/influxdb2
+    networks:
+      - monitor-network
 networks:
   monitor-network:
+
+volumes:
+  influxdb:
