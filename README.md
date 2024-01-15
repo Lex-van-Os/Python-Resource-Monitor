@@ -120,3 +120,9 @@ Once the server has collected and processed the log data, it stores the data in 
 Data can then be viewed through the User Interface provided by InfluxDB. After having logged in, the user can analyse the metrics of the individual client applications by making use of the provided dashboards.
 
 This setup allows for centralized log collection and storage, making it easier to monitor and analyze the behavior of all the client applications from a single location.
+
+### Grafana
+
+To provide extra functionality for visualization, an integration with Grafana is supplied together with this application. Having configured the InfluxDB database environment, one can configure a corresponding Grafana environment by making use of the InfluxDB credentials.
+
+By making use of Grafana, you can create a real time monitoring dashboard, comparable to the dashboard offered by InfluxDB. The Grafana dashboard can be completely personalized to the user's needs.
