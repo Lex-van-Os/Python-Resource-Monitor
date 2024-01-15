@@ -1,6 +1,6 @@
 version: "3"
 services:
-  monitor-client:
+  monitor-client-1:
     build: ./client
     networks:
       - monitor-network
@@ -8,6 +8,30 @@ services:
       - monitor-server
     command: ["/app/monitor.sh"]
     restart: always
+    environment:
+      - STARTUP_DELAY=0
+
+  monitor-client-2:
+    build: ./client
+    networks:
+      - monitor-network
+    depends_on:
+      - monitor-server
+    command: ["/app/monitor.sh"]
+    restart: always
+    environment:
+      - STARTUP_DELAY=2
+
+  monitor-client-3:
+    build: ./client
+    networks:
+      - monitor-network
+    depends_on:
+      - monitor-server
+    command: ["/app/monitor.sh"]
+    restart: always
+    environment:
+      - STARTUP_DELAY=5
 
   monitor-server:
     build: ./server

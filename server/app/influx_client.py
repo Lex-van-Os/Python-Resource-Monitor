@@ -5,6 +5,7 @@ from influxdb_client.client.write_api import ASYNCHRONOUS
 from monitor_metrics import MonitorMetrics
 import logging
 import asyncio
+from datetime import datetime, timedelta
 
 
 class MonitorInfluxClient():
@@ -25,6 +26,22 @@ class MonitorInfluxClient():
         if self.client is not None:
             await self.client.__aexit__(None, None, None)
 
+    async def reset_data(self):
+        if self.client is None:
+            raise Exception(
+                "Client is not initialized. Call initialize() method first.")
+
+        start = datetime.now() - timedelta(days=30)
+        stop = datetime.now()
+
+        await self.client.delete_api().delete(
+            predicate='_measurement="monitor_metric"',
+            bucket=self.influx_bucket,
+            start=start,
+            stop=stop,
+            org=None,
+        )
+
     async def write_monitor_metrics(self, monitor_metrics: MonitorMetrics, user_uid: str):
         if self.client is None:
             raise Exception(
@@ -36,12 +53,13 @@ class MonitorInfluxClient():
 
         try:
             await self.client.write_api().write(
-                    bucket=self.influx_bucket,
-                    record=metrics_point,
-                    record_measurement_name="monitor_metric",
-                    record_tag_keys=["device_id"],
-                    record_field_keys=["timestamp", "processes", "cpu_usage", "memory_usage"],
-                    record_time_key="timestamp",
-                )
+                bucket=self.influx_bucket,
+                record=metrics_point,
+                record_measurement_name="monitor_metric",
+                record_tag_keys=["device_id"],
+                record_field_keys=["timestamp", "processes",
+                                   "cpu_usage", "memory_usage"],
+                record_time_key="timestamp",
+            )
         except Exception as e:
             self.logger.error(f"Write operation failed: {e}")
