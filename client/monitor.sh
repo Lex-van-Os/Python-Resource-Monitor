@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Sleep before executing the script to simulate different connection times to the server
+sleep $STARTUP_DELAY
+
 # Open write end and read end of the pipe to the server
 exec 3<>/dev/tcp/monitor-server/8080
 

@@ -43,6 +43,10 @@ async def initialize_monitor_client() -> MonitorInfluxClient:
     return monitorInfluxClient
 
 
+async def reset_client_data(monitorInfluxClient: MonitorInfluxClient) -> None:
+    await monitorInfluxClient.reset_data()
+
+
 async def handle_client(monitorInfluxClient: MonitorInfluxClient, reader: asyncio.StreamReader, writer: asyncio.StreamWriter) -> None:
     logger.info("New client connected")
     user_uid = str(uuid4())[:5]
@@ -111,6 +115,9 @@ if __name__ == "__main__":
     try:
         monitorInfluxClient = loop.run_until_complete(
             initialize_monitor_client())
+
+        # Reset data in InfluxDB bucket
+        loop.run_until_complete(reset_client_data(monitorInfluxClient))
         loop.run_until_complete(start_server(monitorInfluxClient))
     except KeyboardInterrupt:
         logger.info("Program interrupted")
