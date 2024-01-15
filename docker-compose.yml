@@ -60,8 +60,20 @@ services:
       - influxdb:/var/lib/influxdb2
     networks:
       - monitor-network
+
+  grafana:
+    image: grafana/grafana:8.1.5
+    ports:
+      - "3000:3000"
+    networks:
+      - monitor-network
+    depends_on:
+      - influxdb
+    volumes:
+      - grafana-storage:/var/lib/grafana
 networks:
   monitor-network:
 
 volumes:
   influxdb:
+  grafana-storage:
